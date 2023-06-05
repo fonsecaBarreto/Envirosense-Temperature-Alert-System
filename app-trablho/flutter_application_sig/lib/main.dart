@@ -65,28 +65,54 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          ValueListenableBuilder<RequestState>(
-            valueListenable: controller.resultNotifier,
-            builder: (context, requestState, child) {
-              if (requestState is RequestLoadInProgress) {
-                return CircularProgressIndicator();
-              } else if (requestState is RequestLoadSuccess) {
-                return Expanded(
-                    child: SingleChildScrollView(
-                        child: Column(
-                  children: [
-                    Text(_getTemperarure(requestState).toString()),
-                    Text(_getHumidity(requestState).toString())
-                  ],
-                )));
-              } else {
-                return Container();
-              }
-            },
-          ),
-        ],
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: Text("Ocyan"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: ValueListenableBuilder<RequestState>(
+                  valueListenable: controller.resultNotifier,
+                  builder: (context, requestState, child) {
+                    if (requestState is RequestLoadInProgress) {
+                      return CircularProgressIndicator();
+                    } else if (requestState is RequestLoadSuccess) {
+                      return Expanded(
+                          child: SingleChildScrollView(
+                              child: Column(
+                        children: [
+                          Text(
+                            "${_getTemperarure(requestState).toString()}°C",
+                            style: TextStyle(
+                              fontSize: 48,
+                              fontWeight: FontWeight.bold,
+                              color: _getTemperarure(requestState) > 36
+                                  ? Colors.red
+                                  : Colors.blue,
+                            ),
+                          ),
+                          Text(_getHumidity(requestState).toString())
+                        ],
+                      )));
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
