@@ -1,0 +1,21 @@
+{
+  "name": "sit-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "author": "fonsecaBarreto",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "i": "^0.3.7",
+    "nodemon": "^2.0.22",
+    "npm": "^9.6.7"
+  }
+}
