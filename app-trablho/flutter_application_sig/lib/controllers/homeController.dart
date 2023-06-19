@@ -6,33 +6,48 @@ import 'package:http/http.dart' as http;
 
 import 'dart:async';
 
-class HomeController {
-  final resultNotifier = ValueNotifier<RequestState>(RequestInitial());
+class Metrics {
+  int timestamp;
+  double temperature;
+  double humidity;
+  Metrics(this.timestamp, this.humidity, this.temperature);
 
-  static const urlPrefix =
-      'https://powerful-coast-66741-2297863c9d9a.herokuapp.com';
-  Future<void> makeGetRequest() async {
-    resultNotifier.value = RequestLoadInProgress();
-    print('****** Loading request *******');
-    final url = Uri.parse('$urlPrefix/metrics');
-    Response response = await get(url);
-    print('Status code: ${response.statusCode}');
-    print('Headers: ${response.headers}');
-    print('Body: ${response.body}');
-    Map parsed = json.decode(response.body);
-    resultNotifier.value = RequestLoadSuccess(parsed);
+  @override
+  String toString() {
+    return "${this.timestamp} - ${this.humidity} - ${this.temperature}";
   }
 }
 
-class RequestState {
-  const RequestState();
-}
+class HomeController {
+  final resultNotifier = ValueNotifier<Metrics?>(null);
 
-class RequestInitial extends RequestState {}
+  static const urlPrefix =
+      'https://powerful-coast-66741-2297863c9d9a.herokuapp.com';
 
-class RequestLoadInProgress extends RequestState {}
+  Future<void> makeGetRequest() async {
+    try {
+      print('****** request *******');
+      Response response = await get(Uri.parse('$urlPrefix/metrics'));
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonMap = json.decode(response.body);
 
-class RequestLoadSuccess extends RequestState {
-  final Map body;
-  const RequestLoadSuccess(this.body);
+        Metrics metrics = Metrics(
+            0,
+            (jsonMap['humidity'] == null)
+                ? 0.0
+                : (jsonMap['humidity'] as num).toDouble(),
+            (jsonMap['temperature'] == null)
+                ? 0.0
+                : (jsonMap['temperature'] as num).toDouble());
+
+        resultNotifier.value = metrics;
+      } else {
+        // Request failed
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (exception, stackTrace) {
+      print('An error occurred: $exception $stackTrace');
+      resultNotifier.value = null;
+    }
+  }
 }

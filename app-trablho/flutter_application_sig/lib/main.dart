@@ -47,73 +47,52 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  double _getTemperarure(RequestLoadSuccess requestState) {
-    double temperature = double.parse(requestState.body['temperature']);
-    return temperature;
-  }
-
-  double _getHumidity(RequestLoadSuccess requestState) {
-    double temperature = double.parse(requestState.body['humidity']);
-    return temperature;
-  }
-
   @override
   void initState() {
     _handleLoopRequest();
   }
 
+  renderCircle(Metrics _metrics) {
+    return Container(
+      width: 240,
+      height: 240,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.white, width: 4),
+        shape: BoxShape.circle,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "${_metrics.temperature}",
+            style: TextStyle(fontSize: 64, color: Colors.white),
+          ),
+          Text(
+            "${_metrics.humidity}",
+            style: TextStyle(fontSize: 28, color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.deepPurpleAccent,
       appBar: AppBar(
         title: Text("Wallace Ocyan"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: ValueListenableBuilder<RequestState>(
-                  valueListenable: controller.resultNotifier,
-                  builder: (context, requestState, child) {
-                    if (requestState is RequestLoadInProgress) {
-                      return CircularProgressIndicator();
-                    } else if (requestState is RequestLoadSuccess) {
-                      return Expanded(
-                          child: SingleChildScrollView(
-                              child: Column(
-                        children: [
-                          Text(
-                            "${_getTemperarure(requestState).toString()}°C",
-                            style: TextStyle(
-                              fontSize: 48,
-                              fontWeight: FontWeight.bold,
-                              color: _getTemperarure(requestState) > 30
-                                  ? Colors.red
-                                  : Colors.blue,
-                            ),
-                          ),
-                          _getTemperarure(requestState) > 30
-                              ? Text("CPD super aquecido!")
-                              : Text("Tudo em ordem")
-                        ],
-                      )));
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-              ),
-            ),
-          ],
+        child: ValueListenableBuilder<Metrics?>(
+          valueListenable: controller.resultNotifier,
+          builder: (context, metrics, child) {
+            return Container(
+                child: metrics == null
+                    ? CircularProgressIndicator()
+                    : renderCircle(metrics));
+          },
         ),
       ),
     );
