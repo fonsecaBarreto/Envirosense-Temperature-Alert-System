@@ -9,7 +9,8 @@ import 'dart:async';
 class HomeController {
   final resultNotifier = ValueNotifier<RequestState>(RequestInitial());
 
-  static const urlPrefix = 'http://192.168.0.173:3000';
+  static const urlPrefix =
+      'https://powerful-coast-66741-2297863c9d9a.herokuapp.com';
   Future<void> makeGetRequest() async {
     resultNotifier.value = RequestLoadInProgress();
     print('****** Loading request *******');
@@ -18,7 +19,7 @@ class HomeController {
     print('Status code: ${response.statusCode}');
     print('Headers: ${response.headers}');
     print('Body: ${response.body}');
-    final Map parsed = json.decode(response.body);
+    Map parsed = json.decode(response.body);
     resultNotifier.value = RequestLoadSuccess(parsed);
   }
 }

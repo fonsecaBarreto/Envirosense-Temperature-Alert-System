@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Ocyan"),
+        title: Text("Wallace Ocyan"),
       ),
       body: Center(
         child: Column(
@@ -96,12 +96,14 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: TextStyle(
                               fontSize: 48,
                               fontWeight: FontWeight.bold,
-                              color: _getTemperarure(requestState) > 36
+                              color: _getTemperarure(requestState) > 30
                                   ? Colors.red
                                   : Colors.blue,
                             ),
                           ),
-                          Text(_getHumidity(requestState).toString())
+                          _getTemperarure(requestState) > 30
+                              ? Text("CPD super aquecido!")
+                              : Text("Tudo em ordem")
                         ],
                       )));
                     } else {
