@@ -1,19 +1,20 @@
 const express = require('express')
-const app = express()
-const port = process.env.PORT || 3000
+const { Metrics } = require("./src/metrics.model")
 
+const port = process.env.PORT || 3000
+const app = express()
 app.use(express.json())
 
-const metrics = [{ timestamp: 0, humidity: 90, temperature: 36 }];
+const metrics = [ Metrics(90,36) ];
 
 app.get('/', (req, res) => {
   return res.json("ok");
 })
 
 app.post('/json', (req, res) => {
-  console.log('new data', req.body);
-  const dto = req.body;
-  dto.timestamp = new Date();
+  const { body } = req;
+  const dto = Metrics(body.humidity, body.temperature)
+  console.log('new data: ', dto);
   metrics.push(dto);
   return res.send("ok");
 })
