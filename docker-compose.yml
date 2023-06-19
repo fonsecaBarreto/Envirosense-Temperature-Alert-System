@@ -16,7 +16,7 @@ services:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - '9000:9000'
+      - '9000:3000'
     networks:
       - sig-development
 

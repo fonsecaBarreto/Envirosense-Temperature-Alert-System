@@ -1,9 +1,8 @@
 const express = require('express')
-const { csvStringToJson } = require("./parsers");
 const app = express()
 const port = process.env.PORT || 3000
 
-app.use(express.text())
+app.use(express.json())
 
 const metrics = [{ timestamp: 0, humidity: 90, temperature: 36 }];
 
@@ -12,10 +11,10 @@ app.get('/', (req, res) => {
 })
 
 app.post('/json', (req, res) => {
-  console.log(topic, new Date().toLocaleDateString()," : " , payload.toString());
-  const dto = JSON.parse(payload.toString());
+  console.log('new data', req.body);
+  const dto = req.body;
   dto.timestamp = new Date();
-  metrics.push(result);
+  metrics.push(dto);
   return res.send("ok");
 })
 
