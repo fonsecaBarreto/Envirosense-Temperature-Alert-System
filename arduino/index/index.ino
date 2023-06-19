@@ -41,10 +41,10 @@ void loop() {
   Serial.print(Data.temperature);
   Serial.println("°C");
 
-  const char* csv_header ="timestamp,humidity,temperature\n%d,%.2f,%.2f";
-  char csv_output[255];
-  sprintf(csv_output, csv_header, startTime + INTERVAL, Data.humidity,Data.temperature);
-  sendMeasurement(csv_output);
+  char json_output[255];
+  const char* json_header ="{ \"timestamp\": %d, \"humidity\": %.2f, \"temperature\": %.2f }";
+  sprintf(json_output, json_header, startTime + INTERVAL, Data.humidity, Data.temperature);
+  sendMeasurement(json_output);
 }
 
 void DHTRead() {

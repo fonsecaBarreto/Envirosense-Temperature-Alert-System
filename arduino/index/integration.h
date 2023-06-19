@@ -5,9 +5,10 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-const char* ssid = "Gabriel";
+const char* ssid = "Lucas";
 const char* password = "2014072276";
-const String API_URL = "http://192.168.0.173:3000/csv";
+const String API_URL = "https://powerful-coast-66741-2297863c9d9a.herokuapp.com/json";
+
 
 int connectWifi() {
 
