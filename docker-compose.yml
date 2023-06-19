@@ -1,0 +1,22 @@
+version: '3'
+
+networks:
+  sig-development:
+    name: 'sig-development'
+
+services:
+
+  server:
+    container_name: sig-app
+    restart: always
+    command: sh -c "npm run dev"
+    build:
+      context: ./server
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '9000:9000'
+    networks:
+      - sig-development
+
