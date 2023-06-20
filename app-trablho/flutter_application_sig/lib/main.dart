@@ -1,6 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:http/http.dart';
 import 'controllers/homeController.dart';
 
 void main() {
@@ -30,6 +31,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final controller = HomeController();
+
   late Timer timer;
 
   void _handleLoopRequest() {
@@ -107,6 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     value: metrics?.temperature ?? 0,
                     onChanged: (value) {
                       controller.mockMetrics(value);
+                    },
+                    onChangeEnd: (value) {
+                      controller.handleTemperature(value);
                     },
                   )
                 ],

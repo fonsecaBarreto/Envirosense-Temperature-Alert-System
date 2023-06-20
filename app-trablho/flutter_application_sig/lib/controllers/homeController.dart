@@ -4,7 +4,12 @@ import 'package:http/http.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:audioplayers/audioplayers.dart';
+
 import 'dart:async';
+
+final urlPrefix = 'https://powerful-coast-66741-2297863c9d9a.herokuapp.com';
+final kUrl2 = '$urlPrefix/beep.mp3';
 
 class Metrics {
   int timestamp;
@@ -20,9 +25,28 @@ class Metrics {
 
 class HomeController {
   final resultNotifier = ValueNotifier<Metrics?>(null);
+  final AudioPlayer audioPlayer = AudioPlayer();
 
-  static const urlPrefix =
-      'https://powerful-coast-66741-2297863c9d9a.herokuapp.com';
+  Future playBeep() async {
+    PlayerState playerState = await audioPlayer.state;
+    if (playerState == PlayerState.PLAYING) return;
+    final bytes = await readBytes(Uri.parse(kUrl2));
+    audioPlayer.playBytes(bytes);
+  }
+
+  Future stopBeep() async {
+    PlayerState playerState = await audioPlayer.state;
+    if (playerState == PlayerState.STOPPED) return;
+    await audioPlayer.stop();
+  }
+
+  Future handleTemperature(double temperature) async {
+    if (temperature > 40) {
+      playBeep();
+    } else {
+      stopBeep();
+    }
+  }
 
   Future<void> makeGetRequest() async {
     try {
