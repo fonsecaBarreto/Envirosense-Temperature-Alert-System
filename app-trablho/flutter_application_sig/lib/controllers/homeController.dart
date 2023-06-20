@@ -39,12 +39,22 @@ class HomeController {
             (jsonMap['temperature'] == null)
                 ? 0.0
                 : (jsonMap['temperature'] as num).toDouble());
-
         resultNotifier.value = metrics;
       } else {
         // Request failed
         print('Request failed with status: ${response.statusCode}');
       }
+    } catch (exception, stackTrace) {
+      print('An error occurred: $exception $stackTrace');
+      resultNotifier.value = null;
+    }
+  }
+
+  Future<void> mockMetrics(double temperature) async {
+    try {
+      print('****** mock  *******');
+      Metrics metrics = Metrics(0, 90, temperature);
+      resultNotifier.value = metrics;
     } catch (exception, stackTrace) {
       print('An error occurred: $exception $stackTrace');
       resultNotifier.value = null;
