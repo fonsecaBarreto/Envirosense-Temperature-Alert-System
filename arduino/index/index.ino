@@ -6,7 +6,7 @@
 #include <DHT.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-#define DHTPIN 21      // Define o pino de conexão do sensor ao Arduino
+#define DHTPIN 27      // Define o pino de conexão do sensor ao Arduino
 #define DHTTYPE DHT11  // Define o tipo de sensor (DHT11 ou DHT22)
 DHT dht(DHTPIN, DHTTYPE);
 #define INTERVAL 1000  // Intervalo de Tempo entre medições (ms)
@@ -25,12 +25,17 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
   Serial.println("\n\n Iniciando trabalho de sig \n");
+  pinMode(DHTPIN, INPUT);   
+  // pino 26 as GND
+  pinMode(26, OUTPUT);    
+  digitalWrite(26, LOW);
+  // 
   connectWifi();
   dht.begin();
 }
 
 void loop() {
-  Serial.println("\nIniciando medições");
+
   long startTime = millis();
   while (millis() < startTime + INTERVAL) {}
   DHTRead();
