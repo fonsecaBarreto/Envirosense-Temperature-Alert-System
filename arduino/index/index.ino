@@ -11,9 +11,11 @@
 DHT dht(DHTPIN, DHTTYPE);
 #define INTERVAL 1000  // Intervalo de Tempo entre medições (ms)
 // integration
-const char* ssid = "Lucas";
-const char* password = "2014072276";
-const String API_URL = "http://powerful-coast-66741-2297863c9d9a.herokuapp.com/json";
+
+const char* ssid = "Lucas"; // é Preciso recompilar ssid do wifi 
+const char* password = "2014072276"; // é Preciso recompilar ssid do wifi 
+//const String API_URL = "http://192.168.0.173:3000/metrics";
+const String API_URL = "http://powerful-coast-66741-2297863c9d9a.herokuapp.com/metrics";
 
 struct
 {
@@ -94,7 +96,7 @@ int sendMeasurement(const char* csv) {
   HTTPClient http;
 
   http.begin(client, API_URL);
-  http.addHeader("Content-Type", "text/plain");
+  http.addHeader("Content-Type", "application/json");
 
   Serial.println("\n[HTTP] POST : " + API_URL);
 
