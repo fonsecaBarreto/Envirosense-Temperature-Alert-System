@@ -5,9 +5,7 @@ const collectionName = "users";
 
 async function addUser(email) {
   try {
-    const collection = db.collection(collectionName);
-    const user = { email };
-    const result =  await collection.insertOne(user);
+    const result = await db.collection(collectionName).insertOne({ email });
     return result.insertedId;
   } catch (err) {
     console.error("Failed to save user:", err);
@@ -38,4 +36,14 @@ async function findUser(userId) {
   }
 }
 
-module.exports = { addUser, listUsers, findUser };
+async function findUserByEmail(email) {
+  try {
+    const user = await db.collection(collectionName).findOne({ email });
+    return user;
+  } catch (err) {
+    console.error("Failed to find user:", err);
+    throw err;
+  }
+}
+
+module.exports = { addUser, listUsers, findUser, findUserByEmail };

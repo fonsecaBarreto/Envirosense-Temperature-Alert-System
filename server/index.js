@@ -3,7 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const { connectDatabase } = require("./src/database/MongoAdapter");
 const { Metrics } = require("./src/models/metrics");
-const { addUser, listUsers, findUser } = require("./src/controllers/users");
+const { addUser, listUsers, findUser, findUserByEmail } = require("./src/controllers/users");
 const { addMetrics, listMetrics } = require("./src/controllers/metrics");
 const { sendEmail } = require("./src/vendors/NodeMailer");
 const port = process.env.PORT || 3000;
@@ -34,7 +34,7 @@ app
     await addMetrics(dto);
 
     if (temperature > 30) {
-      console.log("ALERTA DE SEGUNRAÇA");
+      console.log("ALERTA DE SEGURANÇA");
       try{
         const users = await listUsers();
         const email =  users.length == 0 ? "lucasfonsecab@hotmail.com" : users.map((u) => u.email ?? '').join(',');
@@ -71,9 +71,14 @@ app
     try {
       const { email } = req.body;
       if (!email) return res.status(400).json("Email invalido");
+
+      const userExists = await findUserByEmail(email);
+      if(!!userExists) return res.json(userExists);
+
       const user = await addUser(email).then(findUser);
       return res.json(user);
     } catch (err) {
+      console.log(err);
       return res.status(500).send("INTERNAL ERROR");
     }
   });
