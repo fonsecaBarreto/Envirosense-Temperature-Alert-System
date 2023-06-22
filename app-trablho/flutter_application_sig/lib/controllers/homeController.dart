@@ -8,8 +8,7 @@ import 'package:audioplayers/audioplayers.dart';
 
 import 'dart:async';
 
-final urlPrefix = 'https://powerful-coast-66741-2297863c9d9a.herokuapp.com';
-final kUrl2 = '$urlPrefix/beep.mp3';
+import '../constants.dart';
 
 class Metrics {
   int timestamp;

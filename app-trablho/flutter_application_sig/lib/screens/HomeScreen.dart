@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../controllers/homeController.dart';
+import '../repositories/global_repository.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -15,10 +17,6 @@ class _MyHomePageState extends State<MyHomePage> {
     Timer.periodic(Duration(seconds: 2), (timer) {
       controller.makeGetRequest();
     });
-  }
-
-  void moveToLogin(context) {
-    Navigator.pushNamed(context, '/login');
   }
 
   @override
@@ -53,11 +51,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    moveToLogin(context);
+    final globalRepository = Provider.of<GlobalRepository>(context);
+
     return Scaffold(
       backgroundColor: Colors.orange,
       appBar: AppBar(
-        title: Text("Wallace Ocyan"),
+        title: Text(
+          "Sensor SIG",
+        ),
       ),
       body: LayoutBuilder(builder: (context, constraints) {
         return ValueListenableBuilder<List<Metrics>>(
@@ -75,17 +76,49 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const SizedBox(height: 32.0),
+                  Text(
+                    globalRepository.user != null
+                        ? "Bem vindo, " + globalRepository.user.toString() + "!"
+                        : "Bem vindo",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
                   Expanded(
                     child: Container(
                         child: metrics.length == 0
                             ? Center(
                                 child: Text(
-                                "Conectando ao servidor...",
+                                "Baixando dados...",
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.white),
                               ))
                             : renderCircle(metrics[0])),
                   ),
+                  const SizedBox(height: 32.0),
+                  const Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Text(
+                      "Sensor de temperatura embarcado alertar os responsaveis caso a temperatura ambiente esteja acima do esperado (30°C).",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 32.0),
+                  const Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Text(
+                      "Desenvolvido por:\n Lucas Fonseca, Eduarda Sodré e Gabriel Bertusi",
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
                 ],
               ),
             );
