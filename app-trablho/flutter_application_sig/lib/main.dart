@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'controllers/homeController.dart';
 
 void main() {
@@ -31,7 +29,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final controller = HomeController();
-
   late Timer timer;
 
   void _handleLoopRequest() {
@@ -42,7 +39,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    // _handleLoopRequest();
+    controller.loadBeep();
+    _handleLoopRequest();
   }
 
   renderCircle(Metrics _metrics) {
@@ -84,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: constraints.maxWidth,
               height: constraints.maxHeight,
               decoration: BoxDecoration(
-                color: metrics == null || metrics.temperature < 36
+                color: metrics == null || metrics.temperature < 30
                     ? Colors.blueAccent
                     : Color.fromARGB(255, 255, 42, 0),
               ),
@@ -103,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ))
                             : renderCircle(metrics)),
                   ),
-                  Slider(
+                  /* Slider(
                     min: 0.0,
                     max: 60.0,
                     value: metrics?.temperature ?? 0,
@@ -113,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onChangeEnd: (value) {
                       controller.handleTemperature(value);
                     },
-                  )
+                  ) */
                 ],
               ),
             );

@@ -26,11 +26,18 @@ class Metrics {
 class HomeController {
   final resultNotifier = ValueNotifier<Metrics?>(null);
   final AudioPlayer audioPlayer = AudioPlayer();
+  late var bytes;
+
+  Future loadBeep() async {
+    print("baixnado beep...");
+    bytes = await readBytes(Uri.parse(kUrl2));
+    print(bytes);
+  }
 
   Future playBeep() async {
     PlayerState playerState = await audioPlayer.state;
     if (playerState == PlayerState.PLAYING) return;
-    final bytes = await readBytes(Uri.parse(kUrl2));
+    if (bytes == null) return;
     audioPlayer.playBytes(bytes);
   }
 
@@ -63,6 +70,8 @@ class HomeController {
             (jsonMap['temperature'] == null)
                 ? 0.0
                 : (jsonMap['temperature'] as num).toDouble());
+
+        handleTemperature(metrics.temperature);
         resultNotifier.value = metrics;
       } else {
         // Request failed
@@ -76,7 +85,6 @@ class HomeController {
 
   Future<void> mockMetrics(double temperature) async {
     try {
-      print('****** mock  *******');
       Metrics metrics = Metrics(0, 90, temperature);
       resultNotifier.value = metrics;
     } catch (exception, stackTrace) {
