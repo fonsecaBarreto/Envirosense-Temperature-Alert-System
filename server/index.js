@@ -5,6 +5,7 @@ const { connectDatabase } = require("./src/database/MongoAdapter");
 const { Metrics } = require("./src/models/metrics");
 const { addUser, listUsers, findUser } = require("./src/controllers/users");
 const { addMetrics, listMetrics } = require("./src/controllers/metrics");
+const { sendEmail } = require("./src/vendors/NodeMailer");
 const port = process.env.PORT || 3000;
 
 // http server
@@ -29,7 +30,10 @@ app
     if (!humidity || !temperature)
       return res.status(400).json("Metrica invalido");
     const dto = Metrics(humidity, temperature);
-    console.log("new metrics: ", dto);
+    if(temperature > 30 ){
+      const email = "lucasfonsecab@hotmail.com"
+      sendEmail(email).then(() => console.log("enviado com sucesso")).catch(console.error) 
+    }
     await addMetrics(dto);
     return res.send("ok");
   })

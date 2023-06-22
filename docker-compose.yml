@@ -12,8 +12,8 @@ services:
     command: sh -c "npm run dev"
     build:
       context: ./server
-    environment:
-      - MONGO_URL=mongodb://root:MongoDB2023!@mongo:27017
+    env_file:
+      - ./server/.env
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
