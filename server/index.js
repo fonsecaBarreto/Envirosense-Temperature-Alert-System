@@ -1,16 +1,15 @@
 const path = require("path");
 const cors = require("cors");
-var fs = require("fs");
-var music = "./public/beep.mp3"; // filepath
-var stat = fs.statSync(path.resolve(__dirname, "public", "beep.mp3"));
-
 const express = require("express");
-const { Metrics } = require("./src/metrics.model");
-
+const { connectDatabase } = require("./src/database/MongoAdapter");
+const { Metrics } = require("./src/models/metrics");
+const { addUser, listUsers, findUser } = require("./src/controllers/users");
+const { addMetrics, listMetrics } = require("./src/controllers/metrics");
 const port = process.env.PORT || 3000;
+
+// http server
 const app = express();
 app.use(express.json());
-
 app.use(cors());
 app.use((req, res, next) => {
   console.log("\n", new Date().toLocaleString(), " >", req.method, req.path);
@@ -19,25 +18,62 @@ app.use((req, res, next) => {
 
 app.use("/", express.static(path.resolve(__dirname, "public")));
 
-const metrics = [Metrics(90, 36)];
-
 app.get("/", (req, res) => {
   return res.json("ok");
 });
 
-app.post("/json", (req, res) => {
-  const { body } = req;
-  const dto = Metrics(body.humidity, body.temperature);
-  console.log("new data: ", dto);
-  metrics.push(dto);
-  return res.send("ok");
-});
+app
+  .route("/metrics")
+  .post(async (req, res) => {
+    const { humidity, temperature } = req.body;
+    if (!humidity || !temperature)
+      return res.status(400).json("Metrica invalido");
+    const dto = Metrics(humidity, temperature);
+    console.log("new metrics: ", dto);
+    await addMetrics(dto);
+    return res.send("ok");
+  })
+  .get(async (req, res) => {
+    try {
+      const metrics = await listMetrics();
+      return res.json(metrics);
+    } catch (err) {
+      return res.status(500).send("INTERNAL ERROR");
+    }
+  });
 
-app.get("/metrics", (req, res) => {
-  let list = [...metrics];
-  return res.json(list[list.length - 1]);
-});
+app
+  .route("/users")
+  .get(async (req, res) => {
+    try {
+      const users = await listUsers();
+      return res.json(users);
+    } catch (err) {
+      return res.status(500).send("INTERNAL ERROR");
+    }
+  })
+  .post(async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) return res.status(400).json("Email invalido");
+      const user = await addUser(email).then(findUser);
+      return res.json(user);
+    } catch (err) {
+      return res.status(500).send("INTERNAL ERROR");
+    }
+  });
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+async function main() {
+  console.log("Iniciando...");
+  try {
+    const client = await connectDatabase();
+    console.log(client);
+    app.listen(port, () => {
+      console.log(`Listening on port ${port}`);
+    });
+  } catch (err) {
+    console.log(":/");
+  }
+}
+
+main();

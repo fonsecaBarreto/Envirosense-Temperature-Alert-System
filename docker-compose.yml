@@ -12,11 +12,25 @@ services:
     command: sh -c "npm run dev"
     build:
       context: ./server
+    environment:
+      - MONGO_URL=mongodb://root:MongoDB2023!@mongo:27017
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - '9000:3000'
+      - '3000:3000'
     networks:
       - sig-development
 
+  mongo:
+    container_name: sig-db
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: MongoDB2023!
+    ports:
+      - "27017:27017"
+    volumes:
+      - /mongodb:/data/db
+    networks:
+      - sig-development
