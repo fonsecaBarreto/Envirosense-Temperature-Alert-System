@@ -1,11 +1,24 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_sig/screens/InfoModal.dart';
 import 'package:provider/provider.dart';
 import '../controllers/homeController.dart';
 import '../repositories/global_repository.dart';
 
 const PRIMARY_COLOR = Color.fromARGB(255, 3, 27, 69);
 const SECONDARY_COLOR = Color.fromARGB(255, 4, 17, 41);
+
+const PRIMARY_GRADIENT = LinearGradient(
+  colors: [PRIMARY_COLOR, SECONDARY_COLOR],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+);
+
+const SECONDARY_GRADIENT = LinearGradient(
+  colors: [Colors.black, SECONDARY_COLOR],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+);
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -48,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
           width: 260,
           height: 260,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white, width: 5),
+            border: Border.all(color: Colors.white, width: 4),
             shape: BoxShape.circle,
           ),
           child: Column(
@@ -60,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontSize: 56, color: Colors.white),
               ),
               Text(
-                "${_metrics.humidity.toStringAsFixed(2)}",
+                "${_metrics.humidity.toStringAsFixed(1)}%",
                 style: TextStyle(fontSize: 28, color: Colors.white),
               ),
             ],
@@ -73,17 +86,32 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final globalRepository = Provider.of<GlobalRepository>(context);
-
     return Scaffold(
       backgroundColor: Colors.orange,
       appBar: AppBar(
-          title: Text(
+          title: const Text(
             "Sensor SIG",
             style: TextStyle(
               fontSize: 20,
               color: Colors.white,
             ),
           ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.info,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return InfoModal();
+                  },
+                );
+              },
+            ),
+          ],
           backgroundColor: SECONDARY_COLOR),
       body: LayoutBuilder(builder: (context, constraints) {
         return ValueListenableBuilder<List<Metrics>>(
@@ -93,9 +121,9 @@ class _MyHomePageState extends State<MyHomePage> {
               width: constraints.maxWidth,
               height: constraints.maxHeight,
               decoration: BoxDecoration(
-                color: metrics.length == 0 || metrics[0].temperature < 31
-                    ? PRIMARY_COLOR
-                    : Color.fromARGB(255, 3, 0, 0),
+                gradient: metrics.length == 0 || metrics[0].temperature < 31
+                    ? PRIMARY_GRADIENT
+                    : SECONDARY_GRADIENT,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -128,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Padding(
                     padding: const EdgeInsets.all(32.0),
                     child: Text(
-                      "O aplicativo oferece recursos de alerta instantâneo para os responsáveis. Sempre que a temperatura ambiente ultrapassa o limite pré-estabelecido de 30°C",
+                      "",
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
