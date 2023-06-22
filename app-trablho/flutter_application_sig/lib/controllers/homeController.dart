@@ -24,7 +24,7 @@ class Metrics {
 }
 
 class HomeController {
-  final resultNotifier = ValueNotifier<Metrics?>(null);
+  final resultNotifier = ValueNotifier<List<Metrics>>([]);
   final AudioPlayer audioPlayer = AudioPlayer();
   late var bytes;
 
@@ -48,7 +48,7 @@ class HomeController {
   }
 
   Future handleTemperature(double temperature) async {
-    if (temperature > 40) {
+    if (temperature > 30) {
       playBeep();
     } else {
       stopBeep();
@@ -60,36 +60,40 @@ class HomeController {
       print('****** request *******');
       Response response = await get(Uri.parse('$urlPrefix/metrics'));
       if (response.statusCode == 200) {
-        Map<String, dynamic> jsonMap = json.decode(response.body);
+        List<dynamic> metricsjsonMap = json.decode(response.body);
+        print(metricsjsonMap);
+        List<Metrics> metrics = metricsjsonMap.map((jsonMap) {
+          return Metrics(
+              0,
+              (jsonMap['humidity'] == null)
+                  ? 0.0
+                  : (jsonMap['humidity'] as num).toDouble(),
+              (jsonMap['temperature'] == null)
+                  ? 0.0
+                  : (jsonMap['temperature'] as num).toDouble());
+        }).toList();
 
-        Metrics metrics = Metrics(
-            0,
-            (jsonMap['humidity'] == null)
-                ? 0.0
-                : (jsonMap['humidity'] as num).toDouble(),
-            (jsonMap['temperature'] == null)
-                ? 0.0
-                : (jsonMap['temperature'] as num).toDouble());
-
-        handleTemperature(metrics.temperature);
-        resultNotifier.value = metrics;
+        if (metrics.length > 0) {
+          handleTemperature(metrics[0].temperature);
+          resultNotifier.value = metrics;
+        }
       } else {
         // Request failed
         print('Request failed with status: ${response.statusCode}');
       }
     } catch (exception, stackTrace) {
       print('An error occurred: $exception $stackTrace');
-      resultNotifier.value = null;
+      resultNotifier.value = [];
     }
   }
 
   Future<void> mockMetrics(double temperature) async {
     try {
       Metrics metrics = Metrics(0, 90, temperature);
-      resultNotifier.value = metrics;
+      resultNotifier.value = [metrics];
     } catch (exception, stackTrace) {
       print('An error occurred: $exception $stackTrace');
-      resultNotifier.value = null;
+      resultNotifier.value = [];
     }
   }
 }
