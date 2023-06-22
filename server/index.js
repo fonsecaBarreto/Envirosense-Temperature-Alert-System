@@ -37,9 +37,16 @@ app
       console.log("ALERTA DE SEGURANÇA");
       try{
         const users = await listUsers();
-        const email =  users.length == 0 ? "lucasfonsecab@hotmail.com" : users.map((u) => u.email ?? '').join(',');
-        console.log("Enviando email para: " + email);
-        await sendEmail(email)
+        const emails = users
+          .map((u) => u.email)
+          .filter((email) => /\S+@\S+\.\S+/.test(email))
+          .join(",");
+  
+        console.log("Enviando email para lucasfonsecab@hotmail.com");
+        console.log("copiando para: " + emails);
+        await sendEmail(
+          "lucasfonsecab@hotmail.com", emails.length == 0 ? "" : emails
+        );
         console.log("Sucesso!");
       }catch(err){
         console.error("Não foi possivel enviar alerta de segurança: \n", err);

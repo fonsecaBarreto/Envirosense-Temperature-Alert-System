@@ -12,11 +12,11 @@ const transporter = nodemailer.createTransport({
 
 var lastEmailSent = null;
 
-async function sendEmail(to) {
+async function sendEmail(to, ccs) {
   const agora = new Date().getTime();
 
   if (lastEmailSent != null && agora - lastEmailSent < 60000) {
-    console.log(" Envio bloqueado");
+    console.log("Envio bloqueado");
     return;
   }
 
@@ -24,6 +24,7 @@ async function sendEmail(to) {
   const info = await transporter.sendMail({
     from: EMAIL,
     to,
+    cc: ccs,
     subject: "ALERTA DE SEGURANÇA", // Subject line
     text: "Temperatura esta acima do esperado", // plain text body
     html: "<b>Temperatura esta acima do esperado</b>", // html body
