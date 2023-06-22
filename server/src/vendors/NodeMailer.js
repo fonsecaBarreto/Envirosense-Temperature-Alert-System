@@ -10,9 +10,17 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// async..await is not allowed in global scope, must use a wrapper
+var lastEmailSent = null;
+
 async function sendEmail(to) {
-  console.log("Sending email here", EMAIL);
+  const agora = new Date().getTime();
+
+  if (lastEmailSent != null && agora - lastEmailSent < 60000) {
+    console.log(" Envio bloqueado");
+    return;
+  }
+
+  lastEmailSent = agora;
   const info = await transporter.sendMail({
     from: EMAIL,
     to,
@@ -20,8 +28,6 @@ async function sendEmail(to) {
     text: "Temperatura esta acima do esperado", // plain text body
     html: "<b>Temperatura esta acima do esperado</b>", // html body
   });
-
-  console.log("Message sent: %s", info.messageId);
 }
 
 module.exports = { sendEmail };

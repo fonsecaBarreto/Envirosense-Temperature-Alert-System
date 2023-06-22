@@ -30,11 +30,22 @@ app
     if (!humidity || !temperature)
       return res.status(400).json("Metrica invalido");
     const dto = Metrics(humidity, temperature);
-    if(temperature > 30 ){
-      const email = "lucasfonsecab@hotmail.com"
-      sendEmail(email).then(() => console.log("enviado com sucesso")).catch(console.error) 
-    }
+
     await addMetrics(dto);
+
+    if (temperature > 30) {
+      console.log("ALERTA DE SEGUNRAÇA");
+      try{
+        const users = await listUsers();
+        const email =  users.length == 0 ? "lucasfonsecab@hotmail.com" : users.map((u) => u.email ?? '').join(',');
+        console.log("Enviando email para: " + email);
+        await sendEmail(email)
+        console.log("Sucesso!");
+      }catch(err){
+        console.error("Não foi possivel enviar alerta de segurança: \n", err);
+      }
+    }
+
     return res.send("ok");
   })
   .get(async (req, res) => {
