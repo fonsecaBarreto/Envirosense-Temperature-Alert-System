@@ -11,14 +11,14 @@ import 'dart:async';
 import '../constants.dart';
 
 class Metrics {
-  int timestamp;
+  DateTime timestamp;
   double temperature;
   double humidity;
   Metrics(this.timestamp, this.humidity, this.temperature);
 
   @override
   String toString() {
-    return "${this.temperature}°C  -  ${this.humidity}%";
+    return "${this.temperature}°C  -  ${this.humidity}%     ${this.timestamp.toLocal()}";
   }
 }
 
@@ -63,7 +63,7 @@ class HomeController {
         print(metricsjsonMap);
         List<Metrics> metrics = metricsjsonMap.map((jsonMap) {
           return Metrics(
-              0,
+              DateTime.parse(jsonMap['timestamp']),
               (jsonMap['humidity'] == null)
                   ? 0.0
                   : (jsonMap['humidity'] as num).toDouble(),
@@ -88,7 +88,9 @@ class HomeController {
 
   Future<void> mockMetrics(double temperature) async {
     try {
-      Metrics metrics = Metrics(0, 90, temperature);
+      String dateString = '2023-06-22 10:30:00';
+      DateTime dateTime = DateTime.parse(dateString);
+      Metrics metrics = Metrics(dateTime, 90, temperature);
       resultNotifier.value = [metrics];
     } catch (exception, stackTrace) {
       print('An error occurred: $exception $stackTrace');

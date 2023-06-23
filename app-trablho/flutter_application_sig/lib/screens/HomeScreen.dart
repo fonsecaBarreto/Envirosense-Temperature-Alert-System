@@ -2,23 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_sig/screens/InfoModal.dart';
 import 'package:provider/provider.dart';
+import '../constants.dart';
 import '../controllers/homeController.dart';
 import '../repositories/global_repository.dart';
-
-const PRIMARY_COLOR = Color.fromARGB(255, 3, 27, 69);
-const SECONDARY_COLOR = Color.fromARGB(255, 4, 17, 41);
-
-const PRIMARY_GRADIENT = LinearGradient(
-  colors: [PRIMARY_COLOR, SECONDARY_COLOR],
-  begin: Alignment.topCenter,
-  end: Alignment.bottomCenter,
-);
-
-const SECONDARY_GRADIENT = LinearGradient(
-  colors: [Colors.black, SECONDARY_COLOR],
-  begin: Alignment.topCenter,
-  end: Alignment.bottomCenter,
-);
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -153,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: constraints.maxWidth,
               height: constraints.maxHeight,
               decoration: BoxDecoration(
-                gradient: SECONDARY_GRADIENT,
+                gradient: PRIMARY_GRADIENT,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -188,7 +174,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Column(
                       children: [
                         metrics.isEmpty
-                            ? Text("caregando...")
+                            ? Text(
+                                "",
+                                style: TextStyle(color: Colors.white),
+                              )
                             : Expanded(
                                 child: _renderListView(
                                     metrics, _scrollController)),
