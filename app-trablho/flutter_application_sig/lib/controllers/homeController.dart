@@ -18,7 +18,7 @@ class Metrics {
 
   @override
   String toString() {
-    return "${this.timestamp} - ${this.humidity} - ${this.temperature}";
+    return "${this.temperature}°C  -  ${this.humidity}%";
   }
 }
 
