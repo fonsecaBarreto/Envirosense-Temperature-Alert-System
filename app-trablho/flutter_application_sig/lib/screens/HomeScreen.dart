@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_sig/screens/InfoModal.dart';
 import 'package:provider/provider.dart';
+import '../components/nav_drawer.dart';
 import '../constants.dart';
 import '../controllers/homeController.dart';
 import '../repositories/global_repository.dart';
@@ -26,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     controller.loadBeep();
-    _handleLoopRequest();
+    // _handleLoopRequest();
   }
 
   @override
@@ -106,9 +107,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       backgroundColor: Colors.orange,
+      drawer: const NavDrawer(),
       appBar: AppBar(
           title: const Text(
-            "TermoAlerta",
+            "EnviroSense",
             style: TextStyle(
               fontSize: 20,
               color: Colors.white,
