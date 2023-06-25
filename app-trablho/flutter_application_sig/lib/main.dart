@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_sig/repositories/global_repository.dart';
 import 'package:flutter_application_sig/screens/LoadingScreen.dart';
 import 'package:flutter_application_sig/screens/LoginScreen.dart';
+import 'package:flutter_application_sig/screens/UsersScreen.dart';
 import 'package:provider/provider.dart';
 import 'screens/HomeScreen.dart';
 
@@ -27,13 +28,20 @@ class MyApp extends StatelessWidget {
           } else if (snapshot.connectionState == ConnectionState.done) {
             print(repository.user);
             return MaterialApp(
-                title: 'SIG',
+                title: 'EnviroSense',
                 theme: ThemeData(
                   useMaterial3: true,
                   colorScheme:
                       ColorScheme.fromSeed(seedColor: Colors.deepOrange),
                 ),
-                home: repository.user != null ? MyHomePage() : LoginPage());
+                initialRoute: repository.user != null ? '/' : "/login",
+                routes: {
+                  '/': (context) => MyHomePage(),
+                  '/login': (context) => LoginPage(),
+                  '/users': (context) => UsersPage(),
+                });
+
+            // home: repository.user != null ? MyHomePage() : LoginPage());
           }
           return const Text("Algo está errado.");
         });

@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     controller.loadBeep();
-    // _handleLoopRequest();
+    _handleLoopRequest();
   }
 
   @override
