@@ -68,6 +68,8 @@ class _UsersPageState extends State<UsersPage> {
               color: Colors.white,
             ),
           ),
+          iconTheme:
+              IconThemeData(color: Colors.white), // Set the color to white
           actions: [
             IconButton(
               icon: const Icon(

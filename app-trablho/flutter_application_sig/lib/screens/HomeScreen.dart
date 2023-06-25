@@ -116,6 +116,9 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.white,
             ),
           ),
+          iconTheme:
+              IconThemeData(color: Colors.white), // Set the color to white
+
           actions: [
             IconButton(
               icon: Icon(
