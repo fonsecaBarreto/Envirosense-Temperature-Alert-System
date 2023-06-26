@@ -11,10 +11,10 @@ class NavDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-        const DrawerHeader(
-            decoration: const BoxDecoration(color: PRIMARY_COLOR),
-            child: Padding(
-              padding: EdgeInsets.all(32.0),
+        DrawerHeader(
+            decoration: BoxDecoration(color: Colors.black),
+            child: const Padding(
+              padding: EdgeInsets.all(12.0),
               child: Image(
                 image: AssetImage('assets/images/logo.png'),
                 fit: BoxFit.contain,
