@@ -12,7 +12,6 @@ async function connectDatabase() {
         console.error('Failed to connect to the database:', err);
         throw err;
     }finally{
-         // Close the connection when your application shuts down
         process.on('SIGINT', function() {
             client.close().then(() => {
             console.log('Connection closed');

@@ -8,7 +8,7 @@ DHT dht(DHTPIN, DHTTYPE);
 
 const char* ssid = "wifi name";
 const char* password = "wifi password";
-const String API_URL = "http://localhost:9000/metrics";
+const String API_URL = "http://localhost:3000/metrics";
 
 struct
 {

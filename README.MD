@@ -36,17 +36,24 @@ The repository is organized into the following components:
 
 ## Getting Started
 
+
 Follow the steps below to get the Arduino code up and running on your device:
 
-1. **Clone the Repository:** Start by cloning this repository to your local machine using the following command:
+**Clone the Repository:** Start by cloning this repository to your local machine using the following command:
 
     ```
     git clone https://github.com/fonsecaBarreto/sig-sensor
     ```
-2. **Open Arduino IDE:**
+
+<br/>
+<br/>
+
+## Arduino Setup
+
+1. **Open Arduino IDE:**
 Launch the Arduino IDE on your computer.
 
-3. **Modify Configuration:**
+2. **Modify Configuration:**
 - Open the `index.ino` file in the Arduino IDE.
 - Locate the following lines of code:
 
@@ -60,16 +67,38 @@ Launch the Arduino IDE on your computer.
 - Find the line defining the API URL:
 
   ```cpp
-  const char* API_URL = "http://localhost:9000/metrics";
+  const char* API_URL = "http://localhost:3000/metrics";
   ```
 
 - Update the URL to match the actual API endpoint where you want to send the temperature data.
 
 
-1. **Upload the Code:**
+3. **Upload the Code:**
 - Click the "Upload" button in the Arduino IDE to compile and upload the code to your Arduino device.
 
+<br/>
+<br/>
 
+## Server Setup
+
+Follow the steps below to configure the server using Docker Compose:
+
+1. **Copy the .env File:**
+
+   Begin by copying the contents of the `.env.example` file to a new file named `.env`. Fill in the environment variables in the `.env` file with appropriate values:
+
+2. **Run Docker Compose:**
+
+Open the terminal in the directory where you placed the `docker-compose.yml` file. Then, execute the following command to start the services:
+
+docker-compose up 
+
+This will build and start the server and MongoDB containers;.
+
+With these instructions and configurations, you'll be setting up the server and MongoDB using Docker Compose. Make sure to adjust the settings according to your project's needs.
+
+<br/>
+<br/>
 ## Flutter App
 
 Below is a mockup of the Temperature Reports Application:
@@ -93,7 +122,7 @@ If you would like to contribute to this project, we welcome your contributions. 
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE), allowing you to use, modify, and distribute the code as long as you include the original license in your distribution.
+This project is licensed under the ISC License, attributed to @fonsecaBarreto. allowing you to use, modify, and distribute the code as long as you include the original license in your distribution.
 
 ---
 

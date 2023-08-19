@@ -8,7 +8,6 @@ const { addMetrics, listMetrics } = require("./src/controllers/metrics");
 const { sendEmail } = require("./src/vendors/NodeMailer");
 const port = process.env.PORT || 3000;
 
-// http server
 const app = express();
 app.use(express.json());
 app.use(cors());
