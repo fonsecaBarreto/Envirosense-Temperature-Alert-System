@@ -42,7 +42,7 @@ Follow the steps below to get the Arduino code up and running on your device:
 **Clone the Repository:** Start by cloning this repository to your local machine using the following command:
 
     ```
-    git clone https://github.com/fonsecaBarreto/sig-sensor
+    git clone https://github.com/fonsecaBarreto/Envirosense-Temperature-Alert-System
     ```
 
 <br/>
