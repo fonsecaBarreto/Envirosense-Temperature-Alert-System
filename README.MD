@@ -1,5 +1,5 @@
 <div align="center">
-	<img src="docs/logo.png" alt="Physio logo" widht="100%" height="auto">
+	<img src="docs/logo.png" alt="logo" widht="100%" height="auto">
 	<br/>
 	<br/>
 </div>
@@ -69,3 +69,32 @@ Launch the Arduino IDE on your computer.
 1. **Upload the Code:**
 - Click the "Upload" button in the Arduino IDE to compile and upload the code to your Arduino device.
 
+
+## Flutter App
+
+Below is a mockup of the Temperature Reports Application:
+
+<div align="center">
+	<img src="docs/main-screens.png" alt="screens" widht="100%" height="auto">
+	<br/>
+	<br/>
+</div>
+
+
+## Usage
+
+Once all components are set up, the Temperature Alert System will collect and send temperature data to the API, which will then store it in the NoSQL database. You can use the Flutter Reports Application to visualize and analyze the temperature reports generated from the collected data.
+
+Feel free to customize the code, add features, and adapt the system to your specific requirements.
+
+## Contributing
+
+If you would like to contribute to this project, we welcome your contributions. Feel free to fork the repository, make your changes, and submit a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE), allowing you to use, modify, and distribute the code as long as you include the original license in your distribution.
+
+---
+
+We hope this README guides you through the setup and usage of the Temperature Alert System. For any questions or assistance, don't hesitate to reach out. Happy coding!
