@@ -1,4 +1,10 @@
-# Temperature Alert System
+<div align="center">
+	<img src="docs/logo.png" alt="Physio logo" widht="100%" height="auto">
+	<br/>
+	<br/>
+</div>
+
+# Envirosense - Temperature Alert System
 
 ## Introduction
 
@@ -7,7 +13,13 @@ This mono-repository contains the source code for:
 - Serverside API + NoSQL database.
 - Flutter-based reports application.
 
-The system is designed to send temperature data to a designated API endpoint for further processing. This README provides instructions on how to set up and configure the Arduino code to work within your specific environment.
+The system is designed to notify responsible parties about thermal overheating in server rooms.
+
+Thermal overheating in server rooms is a common issue in IT infrastructure. It refers to the excessive increase in temperature within the environment housing the servers, which can result in equipment damage and potentially lead to failures and service interruptions.
+
+Preventing and controlling thermal overheating is crucial to ensure the reliable operation and longevity of IT equipment, as well as to avoid service disruptions.
+
+This README provides instructions on how to set up and configure the Arduino code to work within your specific environment.
 
 ## Repository Structure
 
