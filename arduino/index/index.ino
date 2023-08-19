@@ -1,8 +1,3 @@
-// Autor: Lucas Fonseca
-// Titulo: Trabaho de sig
-// Data: 05/06/2023
-//.........................................................................................................................
-
 #include <DHT.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -10,12 +5,10 @@
 #define DHTTYPE DHT11  // Define o tipo de sensor (DHT11 ou DHT22)
 DHT dht(DHTPIN, DHTTYPE);
 #define INTERVAL 1000  // Intervalo de Tempo entre medições (ms)
-// integration
 
-const char* ssid = "Lucas"; // é Preciso recompilar ssid do wifi 
-const char* password = "2014072276"; // é Preciso recompilar ssid do wifi 
-//const String API_URL = "http://192.168.0.173:3000/metrics";
-const String API_URL = "http://powerful-coast-66741-2297863c9d9a.herokuapp.com/metrics";
+const char* ssid = "wifi name";
+const char* password = "wifi password";
+const String API_URL = "http://localhost:9000/metrics";
 
 struct
 {
@@ -28,10 +21,8 @@ void setup() {
   delay(1000);
   Serial.println("\n\n Iniciando trabalho de sig \n");
   pinMode(DHTPIN, INPUT);   
-  // pino 26 as GND
   pinMode(26, OUTPUT);    
   digitalWrite(26, LOW);
-  // 
   connectWifi();
   dht.begin();
 }
@@ -57,9 +48,9 @@ void loop() {
 
 void DHTRead() {
 
-  float humidity = dht.readHumidity();        // umidade relativa
-  float temperature = dht.readTemperature();  //  temperatura em graus Celsius
-  // Verifica se alguma leitura falhou
+  float humidity = dht.readHumidity();       
+  float temperature = dht.readTemperature();  // Celsius
+
   if (isnan(humidity) || isnan(temperature)) {
     Serial.println("Falha ao ler o sensor DHT!");
     return;
@@ -72,7 +63,7 @@ void DHTRead() {
 
 int connectWifi() {
 
-  WiFi.mode(WIFI_STA);  //Optional
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.println("\nConnecting");
 
